@@ -15,7 +15,15 @@ resource "aws_rds_cluster" "main" {
   )
 }
 
-
+# create cluster instance
+resource "aws_rds_cluster_instance" "main" {
+  count              = var.no_of_instances
+  identifier         = "${var.env}-rds-${count.index}"
+  cluster_identifier = aws_rds_cluster.main.id
+  instance_class     = var.instance_class
+  engine             = var.engine
+  engine_version     = var.engine_version
+}
 
 ## create subnet group ids
 resource "aws_db_subnet_group" "main" {
